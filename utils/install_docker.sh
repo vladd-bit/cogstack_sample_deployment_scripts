@@ -15,23 +15,23 @@ then
     subscription-manager repos --enable=rhel-8-server-optional-rpms
 
     # install necessary prerequisites
-    yum install -y yum-utils wget curl device-mapper-persistent-data lvm2 python3 python3-pip libffi-devel openssl-devel zip unzip tar nano gcc gcc-c++ make python3-devel libevent-devel
+    sudo yum install -y yum-utils wget curl device-mapper-persistent-data lvm2 python3 python3-pip libffi-devel openssl-devel zip unzip tar nano gcc gcc-c++ make python3-devel libevent-devel
     
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    yum-config-manager --enable docker-ce-stable
-    yum-config-manager --enable docker-ce-stable-source
-    yum install -y docker-ce docker-ce-cli containerd.io
+    sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    sudo yum-config-manager --enable docker-ce-stable
+    sudo yum-config-manager --enable docker-ce-stable-source
+    sudo yum install -y docker-ce docker-ce-cli containerd.io
 
-    pip3 install -y docker-compose
+    sudo pip3 install -y docker-compose
 
     # create docker group and add the root user to it, as root will be used to run the docker process
-    groupadd docker
-    usermod -aG docker root
-    usermod -aG docker $USER
+    sudo groupadd docker
+    sudo usermod -aG docker root
+    sudo usermod -aG docker $USER
 
     # start the service
-    systemctl enable docker.service
-    systemctl start docker
+    sudo systemctl enable docker.service
+    sudo systemctl start docker
 else
     exit 1
 fi;
