@@ -1,0 +1,23 @@
+#---------------------------------------------------------------------------#
+# Kibana webapp                                                             #
+#---------------------------------------------------------------------------#
+ kibana:
+    image: docker.elastic.co/kibana/kibana-oss:7.10.0
+    shm_size : 128mb
+    restart: always
+    environment:
+      SERVER_NAME: kibana.server
+      ELASTICSEARCH_HOSTS: "http://elasticsearch-1:9200"
+    volumes:
+      - ../../cogstack_pipeline/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - esnet-ext
+#---------------------------------------------------------------------------#
+# Docker networks.                                                          #
+#---------------------------------------------------------------------------#
+networks:
+  esnet:
+    driver: host
+    name : esnet-ext

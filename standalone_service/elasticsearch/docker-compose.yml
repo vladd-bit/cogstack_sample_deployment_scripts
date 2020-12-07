@@ -1,0 +1,33 @@
+#---------------------------------------------------------------------------#
+# Elasticsearch cluster                                                     #
+#---------------------------------------------------------------------------#
+ elasticsearch-1:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.0
+    shm_size : 128mb
+    restart: always
+    environment:
+      - cluster.name=docker-cluster
+     # - ELASTIC_USER:"admin"
+     # - ELASTIC_PASSWORD:"admin"
+     # - bootstrap.memory_lock=true
+     # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - ../../elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    depends_on:
+      - cogstack-job-repo
+    #command: "sysctl -w vm.max_map_count=262144"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks:
+      - esnet-ext
+#---------------------------------------------------------------------------#
+# Docker networks.                                                          #
+#---------------------------------------------------------------------------#
+networks:
+  esnet:
+    driver: host
+    name : esnet-ext

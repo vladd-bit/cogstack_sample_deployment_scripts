@@ -11,8 +11,17 @@ then
 elif  [ $os_distribution = "redhat" ] || [ $os_distribution = "red hat" ] || [ $os_distribution = "centos" ] 
 then
     yum -y update && yum -y upgrade
-    subscription-manager repos --enable=rhel-8-for-x86_64-appstream-rpms
-    subscription-manager repos --enable=rhel-8-server-optional-rpms
+    
+    sudo yum remove -y docker \
+                    docker-client \
+                    docker-client-latest \
+                    docker-common \
+                    docker-latest \
+                    docker-latest-logrotate \
+                    docker-logrotate \
+                    docker-engine
+
+    sudo yum remove -y buildah podman
 
     # install necessary prerequisites
     sudo yum install -y yum-utils wget curl device-mapper-persistent-data lvm2 python3 python3-pip libffi-devel openssl-devel zip unzip tar nano gcc gcc-c++ make python3-devel libevent-devel
@@ -22,7 +31,7 @@ then
     sudo yum-config-manager --enable docker-ce-stable-source
     sudo yum install -y docker-ce docker-ce-cli containerd.io
 
-    sudo pip3 install -y docker-compose
+    sudo pip3 install docker-compose
 
     # create docker group and add the root user to it, as root will be used to run the docker process
     sudo groupadd docker
@@ -35,3 +44,6 @@ then
 else
     exit 1
 fi;
+
+
+echo "Finished installing docker and utils.."
