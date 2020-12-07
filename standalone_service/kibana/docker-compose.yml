@@ -1,3 +1,5 @@
+version: "3.5"
+services:
 #---------------------------------------------------------------------------#
 # Kibana webapp                                                             #
 #---------------------------------------------------------------------------#
@@ -7,17 +9,8 @@
     restart: always
     environment:
       SERVER_NAME: kibana.server
-      ELASTICSEARCH_HOSTS: "http://elasticsearch-1:9200"
+      # edit the url to match your server
+      ELASTICSEARCH_HOSTS: "http://elasticsearch-1:9200" 
     volumes:
       - ../../cogstack_pipeline/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
-    ports:
-      - "5601:5601"
-    networks:
-      - esnet-ext
-#---------------------------------------------------------------------------#
-# Docker networks.                                                          #
-#---------------------------------------------------------------------------#
-networks:
-  esnet:
-    driver: host
-    name : esnet-ext
+    network_mode: host

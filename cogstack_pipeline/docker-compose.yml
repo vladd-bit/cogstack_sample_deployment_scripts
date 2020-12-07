@@ -117,7 +117,7 @@ services:
 #---------------------------------------------------------------------------#
 networks:
   esnet:
-    driver: host
+    driver: bridge
     name : esnet-ext
   cognet:
     driver: host

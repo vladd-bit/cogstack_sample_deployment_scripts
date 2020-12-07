@@ -41,6 +41,8 @@ then
     # start the service
     sudo systemctl enable docker.service
     sudo systemctl start docker
+
+    sudo yum -y autoremove
 else
     exit 1
 fi;
