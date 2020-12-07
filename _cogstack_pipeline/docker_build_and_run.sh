@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-IMAGE_TAG="base_image_debian_dev"
 IMAGE_VERSION="latest"
 
-DOCKER_BASE_IMAGE=$PWD"/base_debian_dev_image.dockerfile"
+DOCKER_BASE_IMAGE=$PWD"/base_debian_image.dockerfile"
 
-docker build -t ${IMAGE_TAG}:${IMAGE_VERSION} . -f $DOCKER_BASE_IMAGE --force-rm
+docker build -t base_image_debian:${IMAGE_VERSION} . -f $DOCKER_BASE_IMAGE --force-rm
 docker build -t cogstack:${IMAGE_VERSION} . -f $PWD"/cogstack.dockerfile" --force-rm
 
 # Run the images by creating containers

@@ -6,27 +6,27 @@ services:
  databank-db:
    image: postgres:13-alpine
    shm_size: 2048mb
-   volumes:
-     - ../data/:/data  # mount the folder containing the DB csv files
-     - ./scripts/create_databank_db.sh:/docker-entrypoint-initdb.d/create_databank_db.sh:ro
-     - databank-db-vol:/var/lib/postgresql/data
+   restart: always  
    environment:
      - POSTGRES_USER=admin
      - POSTGRES_PASSWORD=admin
      - POSTGRES_DATABANK_DB=project_data
+   volumes:
+     - ../data/:/data  # mount the folder containing the DB csv files
+     - ./scripts/create_databank_db.sh:/docker-entrypoint-initdb.d/create_databank_db.sh:ro
+     - databank-db-vol:/var/lib/postgresql/data
    ports:
      - 5433:5432
+   networks:
+     - cognet
  
  #---------------------------------------------------------------------------#
  # CogStack-Pipeline related containers                                      #
  #---------------------------------------------------------------------------#
  cogstack-pipeline:
-   # build:
-   #   context: ./
-   #   dockerfile: cogstack\
-   #   shm_size: 128mb
-   #   args :
-   #     -t : cogstack:latest
+   image: cogstacksystems/cogstack-pipeline:dev-latest
+   shm_size : 128mb
+   restart: always  
    environment:
      - SERVICES_USED=cogstack-job-repo:5432,databank-db:5432,elasticsearch-1:9200
      - LOG_LEVEL=info
@@ -38,7 +38,6 @@ services:
      - ./cogstack/conf:/cogstack/cogstack_conf:ro  # <-- cogstack properties folder
      - ./cogstack/run_pipeline.sh:/cogstack/run_pipeline.sh:ro
      - ./gate/app:/gate/app
-   image : cogstacksystems/cogstack-pipeline-gate:latest
    depends_on:
      - cogstack-job-repo
      - databank-db
@@ -46,30 +45,37 @@ services:
    # java [parameters] -jar cogstack-*.jar <directory>
    # The run_pipeline.sh passes the two arguments and starts cogstack with the two arguments .jar file and job conf directory
    command: /cogstack/run_pipeline.sh /cogstack/cogstack-*.jar /cogstack/cogstack_conf
+   networks:
+     - cognet
  
  cogstack-job-repo:
     image: postgres:13-alpine 
     shm_size: 128mb
-    volumes:
-      - ./scripts/create_pgsql_job_repo.sh:/docker-entrypoint-initdb.d/create_pgsql_job_repo.sh:ro
-      - cogstack-job-vol:/var/lib/postgresql/data
+    restart: always
     environment:
       - POSTGRES_USER=cogstack
       - POSTGRES_PASSWORD=cogstack
       - POSTGRES_COGSTACK_DB=cogstack_job_repo
+    volumes:
+      - ./scripts/create_pgsql_job_repo.sh:/docker-entrypoint-initdb.d/create_pgsql_job_repo.sh:ro
+      - cogstack-job-vol:/var/lib/postgresql/data
     depends_on:
       - databank-db
     ports:
       - 5432:5432
+    networks:
+      - cognet
 
 #---------------------------------------------------------------------------#
 # Elasticsearch cluster                                                     #
 #---------------------------------------------------------------------------#
  elasticsearch-1:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.0
+    shm_size : 128mb
+    restart: always
     environment:
       - cluster.name=docker-cluster
-    #  - ELASTIC_USER:"admin"
+     #  - ELASTIC_USER:"admin"
      # - ELASTIC_PASSWORD:"admin"
      # - bootstrap.memory_lock=true
      # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -84,16 +90,19 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 9200:9200  
+      - 9200:9200
+    networks:
+      - esnet-ext
 #---------------------------------------------------------------------------#
 # Kibana webapp                                                             #
 #---------------------------------------------------------------------------#
  kibana:
     image: docker.elastic.co/kibana/kibana-oss:7.10.0
+    shm_size : 128mb
+    restart: always
     environment:
       SERVER_NAME: kibana.server
       ELASTICSEARCH_HOSTS: "http://elasticsearch-1:9200"
-    restart: always
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
       - elasticsearch-vol-1:/usr/share/elasticsearch/data
@@ -106,10 +115,10 @@ services:
 #---------------------------------------------------------------------------#
 networks:
   esnet:
-    driver: bridge
+    driver: host
     name : esnet-ext
   cognet:
-    driver: bridge
+    driver: host
 
 #---------------------------------------------------------------------------#
 # Docker named volumes                                                      #
