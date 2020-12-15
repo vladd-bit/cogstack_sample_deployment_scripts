@@ -1,8 +1,6 @@
 version: "3.5"
 services:
-#---------------------------------------------------------------------------#
-# Kibana webapp                                                             #
-#---------------------------------------------------------------------------#
+
  kibana:
     image: docker.elastic.co/kibana/kibana-oss:7.10.0
     shm_size : 128mb
@@ -12,5 +10,5 @@ services:
       # edit the url to match your server
       ELASTICSEARCH_HOSTS: "http://elasticsearch-1:9200" 
     volumes:
-      - ../../cogstack_pipeline/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+      - ../../cogstack-pipeline/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     network_mode: host

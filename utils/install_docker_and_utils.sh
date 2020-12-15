@@ -47,5 +47,4 @@ else
     exit 1
 fi;
 
-
 echo "Finished installing docker and utils.."
