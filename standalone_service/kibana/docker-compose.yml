@@ -8,7 +8,7 @@ services:
     environment:
       SERVER_NAME: kibana.server
       # edit the url to match your server
-      ELASTICSEARCH_HOSTS: "http://elasticsearch-1:9200" 
+      ELASTICSEARCH_HOSTS: "http://127.0.0.1:9200" 
     volumes:
       - ../../cogstack-pipeline/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     network_mode: host

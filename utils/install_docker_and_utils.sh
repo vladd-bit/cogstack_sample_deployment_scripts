@@ -5,10 +5,10 @@ echo "This script must be run with root privileges."
 os_distribution="$(exec ./detect_os.sh)"
 echo "Found distribution: $os_distribution "
 
-if [ $os_distribution = "debian" ] || [ $os_distribution = "ubuntu" ]
+if [ "$os_distribution" == "debian" ] || [ "$os_distribution" == "ubuntu" ];
 then
     echo "No instructions given for distribution: $os_distribution" 
-elif  [ $os_distribution = "redhat" ] || [ $os_distribution = "red hat" ] || [ $os_distribution = "centos" ] 
+elif  [ "$os_distribution" == "redhat" ] || [ "$os_distribution" == "red hat" ] || [ "$os_distribution" == "centos" ]; 
 then
     yum -y update && yum -y upgrade
     
