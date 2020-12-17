@@ -21,6 +21,7 @@ services:
         soft: -1
         hard: -1
     network_mode: host
-  volumes:
-    lasticsearch-vol-1:
-      driver: local
+
+volumes:
+  elasticsearch-vol-1:
+    driver: local

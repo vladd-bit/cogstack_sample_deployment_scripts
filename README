@@ -1,19 +1,19 @@
 Don't forget to execute chmod -R u+x ./path_to_this_folders_scripts*.sh otherwise you won't be executing much...
 
-find $(pwd)/cogstack_pipeline -name "*.sh" -execdir chmod u+x {} +
-find $(pwd)/utils -name "*.sh" -execdir chmod u+x {} +
-
-
 Quickstart steps:
-wget "repo https://github.com/....../master.zip"
 
-unzip master.zip -O cogstack_deployment
-mv ./cogstack_deployment /etc/cogstack_deployment
+
+wget https://github.com/vladd-bit/cogstack_sample_deployment_scripts/archive/master.zip 
+
+mv ./master.zip ./cogstack_sample_deployment_scripts.zip
+unzip ./cogstack_sample_deployment_scripts.zip 
+mv ./cogstack_sample_deployment_scripts-master ./etc/cogstack_deployment
+
+find /etc/cogstack_deployment/cogstack_pipeline -name "*.sh" -execdir chmod u+x {} +
+find /etc/cogstack_deployment/utils -name "*.sh" -execdir chmod u+x {} +
 
 chmod -R 755 /etc/cogstack_deployment
 chown -R root:root /etc/cogstack_deployment
-
-
 
 
 The ``` db_samples.sql.gz ``` belongs to example9.

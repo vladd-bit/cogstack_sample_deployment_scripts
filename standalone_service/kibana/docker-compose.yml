@@ -3,6 +3,7 @@ services:
 
  kibana:
     image: docker.elastic.co/kibana/kibana-oss:7.10.0
+    # image: amazon/opendistro-for-elasticsearch-kibana:1.12.0
     shm_size : 128mb
     restart: always
     environment:
