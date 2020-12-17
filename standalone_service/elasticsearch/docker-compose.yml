@@ -16,6 +16,12 @@ services:
     volumes:
       - ../../cogstack-pipeline/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - elasticsearch-vol-1:/usr/share/elasticsearch/data
+      # mapping security config
+      # INFO: uncomment below to add SSL keys
+      #- ../security/root-ca.pem:/usr/share/elasticsearch/config/root-ca.pem:ro
+      #- ../security/es-node1.pem:/usr/share/elasticsearch/config/esnode.pem:ro
+      #- ../security/es-node1.key:/usr/share/elasticsearch/config/esnode.key:ro
+      #- ../security/internal_users.yml:/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml:ro
     ulimits:
       memlock:
         soft: -1
