@@ -17,3 +17,20 @@ chown -R root:root /etc/cogstack_deployment
 
 
 The ``` db_samples.sql.gz ``` belongs to example9.
+
+
+
+
+
+
+
+
+## Jupyter-hub configuration
+
+The password is set in ./cogstack_pipeline/jupyter-hub/config/jupyter_notebook_config.py 
+
+```
+c.NotebookApp.password = u'sha1:90559713cfc9:c4d986a5a63c083626ebc1a74cb874d9203c4152' # 'admin'
+```
+
+Please check https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#securing-a-notebook-server for additional configs.

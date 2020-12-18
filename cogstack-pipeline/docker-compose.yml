@@ -75,7 +75,7 @@ services:
     shm_size : 128mb
     restart: always
     # use this in case of vm.max_map_count errors, the /usr/local/bin/docker-entry.sh is taken from the DockerHub image of elasticsearch
-    #entrypoint: "/bin/sh -c 'echo vm.max_map_count=262144 >> /etc/sysctl.conf   && /usr/local/bin/docker-entrypoint.sh' "
+    entrypoint: "/bin/sh -c 'echo vm.max_map_count=262144 >> /etc/sysctl.conf   && /usr/local/bin/docker-entrypoint.sh' "
     environment:
       - cluster.name=cogstack-elastic-cluster
       - ELASTIC_USER=elastic
@@ -104,6 +104,7 @@ services:
       - "9200:9200"
     networks:
       - esnet
+
 #---------------------------------------------------------------------------#
 # Kibana webapp                                                             #
 #---------------------------------------------------------------------------#
@@ -135,31 +136,35 @@ services:
       - esnet
 
 #---------------------------------------------------------------------------#
-# Jupyter Hub                                                               #
+# Jupyter-hub  notebook                                                     #
 #---------------------------------------------------------------------------#
-# jupyter-hub:
-#   image: lrog/cogstack-jupyter-hub:latest
-#   build: ../services/jupyter-hub/
-#   container_name: cogstack-jupyter-hub
-#   restart: always
-#   environment:
-#     - JUPYTER_ENABLE_LAB=yes
-#   volumes:
-#     - "../services/jupyter-hub/notebooks:/home/jovyan/notebooks"
-#     # INFO: uncomment below to map security certificates if needed
-#     #- "../security/jupyter.pem:/etc/ssl/notebook/jupyter.pem:ro"
-#     #- "../security/jupyter.key:/etc/ssl/notebook/jupyter.key:ro"
-#     #- "../security/root-ca.pem:/etc/ssl/notebook/root-ca.pem:ro"
-#   command: "start-notebook.sh \
-#                 --NotebookApp.password=${JUPYTERHUB_PASSWORD}"
-#     # INFO: uncomment below to use SSL keys (as a part of start-up cmd) 
-#     #           --keyfile=/etc/ssl/notebook/jupyter.key \
-#     #           --certfile=/etc/ssl/notebook/jupyter.pem \
-#   ports:
-#     - "8888:8888"
-#   networks:
-#     - cognet
-#     
+  jupyter-hub:
+     image: jupyter/datascience-notebook
+     #build: ../services/jupyter-hub/
+     container_name: cogstack-jupyter-hub-datascience-notebook
+     restart: always
+     environment:
+       - JUPYTER_ENABLE_LAB=yes
+     # old irrelevant option, the password config is set in 
+     # - JUPYTERHUB_PASSWORD='sha1:90559713cfc9:c4d986a5a63c083626ebc1a74cb874d9203c4152' # 'admin'
+     volumes:
+       - "./jupyter-hub/notebooks:/home/jovyan/notebooks"
+       - "./jupyter-hub/config/jupyter_notebook_config.py:/home/jovyan/.jupyter/jupyter_notebook_config.py"
+       # INFO: uncomment below to map security certificates if needed
+       #- "../security/jupyter.pem:/etc/ssl/notebook/jupyter.pem:ro"
+       #- "../security/jupyter.key:/etc/ssl/notebook/jupyter.key:ro"
+       #- "../security/root-ca.pem:/etc/ssl/notebook/root-ca.pem:ro"
+     # command: "start-notebook.sh  --NotebookApp.password=${JUPYTERHUB_PASSWORD}"
+       # INFO: uncomment below to use SSL keys (as a part of start-up cmd) 
+       #           --keyfile=/etc/ssl/notebook/jupyter.key \
+       #           --certfile=/etc/ssl/notebook/jupyter.pem \
+     ports:
+     - "8888:8888"
+     expose: 
+     - "8888"
+     network_mode: bridge
+     
+
 #---------------------------------------------------------------------------#
 # Docker networks.                                                          #
 #---------------------------------------------------------------------------#

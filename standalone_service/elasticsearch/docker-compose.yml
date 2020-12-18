@@ -6,7 +6,7 @@ services:
     shm_size : 128mb
     restart: always
     # use this in case of vm.max_map_count errors, the /usr/local/bin/docker-entry.sh is taken from the DockerHub image of elasticsearch
-    #entrypoint: "/bin/sh -c 'echo vm.max_map_count=262144 >> /etc/sysctl.conf   && /usr/local/bin/docker-entrypoint.sh' "
+    entrypoint: "/bin/sh -c 'echo vm.max_map_count=262144 >> /etc/sysctl.conf   && /usr/local/bin/docker-entrypoint.sh' "
     environment:
       - cluster.name=cogstack-elastic-cluster
       - ELASTIC_USER=elastic
