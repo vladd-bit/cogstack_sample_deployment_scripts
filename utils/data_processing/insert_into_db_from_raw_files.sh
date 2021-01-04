@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-# This is the DATA directory inside the postgres database Docker image. 
-root_project_data_dir="./"
+# env variables
+
+$POSTGRES_USER="admin"
+$POSTGRES_PASSWORD="admin"
+$POSTGRES_DATABANK_DB="project_data"
+
+# This is the DATA directory inside the postgres database Docker image, or it could be be a folder on the local system
+root_project_data_dir="/data/"
 
 files_to_match="*.txt"
 
@@ -29,15 +35,20 @@ for folder_to_process in $folders_to_process; do
             # gets the file name and adds it to the CSV (the delimiter in this case is a pipe "|") file as a field at the beginning : file_ID|column1|column2...
             sed -i -e "/^$file_name|/!s/$file_name\|/$file_name\|/" $file_path
 
-            # inserts it into the DB
-            psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DATABANK_DB" --hostname "$docker_db_container_ip_address" <<-EOSQL
-                \copy TABLENAME from $file_path delimiter '|' csv header NULL ''; 
-            EOSQL
+# inserts it into the DB
+# --username "$POSTGRES_USER" --dbname "$POSTGRES_DATABANK_DB" --host "$docker_db_container_ip_address"
+psql -v ON_ERROR_STOP=1 "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$docker_db_container_ip_address/$POSTGRES_DATABANK_DB"<<-EOSQL
+    \copy TABLENAME from $file_path delimiter '|' csv header NULL '' encoding 'Windows-1251'; 
+EOSQL
 
-            # moves it to a processed folder
-            mv $file_path $root_project_data_dir$processed_folder_name
-            printf "\n"
-            echo "Finished processing file:" $filename
+            # moves it to a processed folder if successful query
+            if [ $? -ne 0 ]; then
+                echo "error when processing file: "$file_path 
+            else
+                mv $file_path $root_project_data_dir$processed_folder_name
+                printf "\n"
+                echo "Finished processing file:"$file_path
+            fi
         done
     fi
 done
