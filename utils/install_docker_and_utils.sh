@@ -11,6 +11,8 @@ then
 elif  [ "$os_distribution" == "redhat" ] || [ "$os_distribution" == "red hat" ] || [ "$os_distribution" == "centos" ]; 
 then
     yum -y update && yum -y upgrade
+
+
     
     sudo yum remove -y docker \
                     docker-client \
