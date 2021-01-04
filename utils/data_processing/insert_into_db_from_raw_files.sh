@@ -26,12 +26,15 @@ for folder_to_process in $folders_to_process; do
             file_name=$(basename $file_path)
             file_name="${file_name%.*}"
 
+            # gets the file name and adds it to the CSV (the delimiter in this case is a pipe "|") file as a field at the beginning : file_ID|column1|column2...
             sed -i -e "/^$file_name|/!s/$file_name\|/$file_name\|/" $file_path
 
+            # inserts it into the DB
             psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DATABANK_DB" --hostname "$docker_db_container_ip_address" <<-EOSQL
                 \copy TABLENAME from $file_path delimiter '|' csv header NULL ''; 
             EOSQL
 
+            # moves it to a processed folder
             mv $file_path $root_project_data_dir$processed_folder_name
             printf "\n"
             echo "Finished processing file:" $filename
