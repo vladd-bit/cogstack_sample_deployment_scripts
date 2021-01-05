@@ -70,8 +70,8 @@ services:
 # Elasticsearch cluster                                                     #
 #---------------------------------------------------------------------------#
   elasticsearch-1:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.0
-    #image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    # image: amazon/opendistro-for-elasticsearch:1.12.0
     shm_size : 128mb
     restart: always
     # use this in case of vm.max_map_count errors, the /usr/local/bin/docker-entry.sh is taken from the DockerHub image of elasticsearch
@@ -109,7 +109,7 @@ services:
 # Kibana webapp                                                             #
 #---------------------------------------------------------------------------#
   kibana:
-    image: docker.elastic.co/kibana/kibana-oss:7.10.0
+    image: docker.elastic.co/kibana/kibana:7.10.1
     # image: amazon/opendistro-for-elasticsearch-kibana:1.12.0
     shm_size : 128mb
     restart: always

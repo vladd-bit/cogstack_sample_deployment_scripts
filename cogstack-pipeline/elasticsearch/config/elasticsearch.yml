@@ -33,7 +33,8 @@ transport.host: 0.0.0.0
 # disabled by default when using '-oss' images
 # need to be disabled manually when using standard images from elastic
 #----------------------
-#xpack.security.enabled: false
+xpack.license.self_generated.type: trial
+xpack.security.enabled: true
 #xpack.graph.enabled: false
 #xpack.ml.enabled: false
 #xpack.monitoring.enabled: false
