@@ -3,13 +3,10 @@ services:
 
  jupyter-hub:
     image: jupyter/datascience-notebook
-    #build: ../services/jupyter-hub/
     container_name: cogstack-jupyter-hub-datascience-notebook
     restart: always
     environment:
       - JUPYTER_ENABLE_LAB=yes
-    # old irrelevant option, the password config is set in 
-    # - JUPYTERHUB_PASSWORD='sha1:90559713cfc9:c4d986a5a63c083626ebc1a74cb874d9203c4152' # 'admin'
     volumes:
       - "../../cogstack-pipeline/jupyter-hub/notebooks:/home/jovyan/notebooks"
       - "../../cogstack-pipeline/jupyter-hub/config/jupyter_notebook_config.py:/home/jovyan/.jupyter/jupyter_notebook_config.py"
