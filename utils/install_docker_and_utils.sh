@@ -34,6 +34,7 @@ then
     sudo yum install -y docker-ce docker-ce-cli containerd.io
 
     sudo pip3 install docker-compose
+    sudo pip3 install html2text
 
     # create docker group and add the root user to it, as root will be used to run the docker process
     sudo groupadd docker
