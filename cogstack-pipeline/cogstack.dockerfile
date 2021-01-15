@@ -27,9 +27,9 @@ RUN apt-get clean autoclean
 # set working directory
 WORKDIR /
 
-RUN wget "https://github.com/CogStack/CogStack-Pipeline/archive/master.zip" -O "./CogStack-Pipeline-master.zip"
-RUN unzip -o "./CogStack-Pipeline-master.zip"
-RUN mv "./CogStack-Pipeline-master" "./cogstack-repo-build"
+RUN wget "https://github.com/CogStack/CogStack-Pipeline/archive/dev.zip" -O "./CogStack-Pipeline-dev.zip"
+RUN unzip -o "./CogStack-Pipeline-dev.zip"
+RUN mv "./CogStack-Pipeline-dev" "./cogstack-repo-build"
 
 WORKDIR /cogstack-repo-build
 
@@ -63,7 +63,22 @@ RUN cp ./extras/ImageMagick/policy.xml /etc/ImageMagick-6/policy.xml
 # 
 # ENV GATE_HOME=/gate/
 
-# 
+# GATE directories structure:
+# - core components: /gate/home/
+# - custom user apps: /gate/app/
+
+WORKDIR /gate/
+
+# for the moment use the older GATE bundle containing all plugins and core components 
+# TODO: update to GATE 8.5+
+RUN curl -L 'https://downloads.sourceforge.net/project/gate/gate/8.4.1/gate-8.4.1-build5753-BIN.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fgate%2Ffiles%2Fgate%2F8.4.1%2Fgate-8.4.1-build5753-BIN.zip' > gate-8.4.1-build5753-BIN.zip && \
+	unzip gate-8.4.1-build5753-BIN.zip && \
+	mv gate-8.4.1-build5753-BIN home && \
+	rm gate-8.4.1-build5753-BIN.zip
+    
+ENV GATE_HOME=/gate/home
+
+# switch to CogStack main directory
 WORKDIR /cogstack
 
 # Remove cogstack-pipeline build dir

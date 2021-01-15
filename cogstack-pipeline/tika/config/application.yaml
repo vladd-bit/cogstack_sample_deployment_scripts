@@ -39,7 +39,7 @@ tika:
         timeout: 300
       tesseract-ocr:
         timeout: 300
-      min-doc-text-length: 100
+      min-doc-text-length: 10
 
 
 # documents processing configuration

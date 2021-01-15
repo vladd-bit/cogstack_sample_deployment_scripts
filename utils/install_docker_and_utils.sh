@@ -7,13 +7,28 @@ echo "Found distribution: $os_distribution "
 
 if [ "$os_distribution" == "debian" ] || [ "$os_distribution" == "ubuntu" ];
 then
-    echo "No instructions given for distribution: $os_distribution" 
+    sudo apt-get update -y && sudo apt-get upgrade -y
+
+    sudo apt-get install -y libreoffice 
+    sudo apt-get install -y wget curl git python3 python3-pip openssl-devel zip unzip tar nano gcc gcc-c++ make python3-dev build-essential
+    
+    # create docker group and add the root user to it, as root will be used to run the docker process
+    sudo groupadd docker
+    sudo usermod -aG docker root
+    sudo usermod -aG docker $USER
+
+    # start the service
+    sudo systemctl enable docker.service
+    sudo systemctl start docker
+
+    sudo apt-get -y autoremove
+
 elif  [ "$os_distribution" == "redhat" ] || [ "$os_distribution" == "red hat" ] || [ "$os_distribution" == "centos" ]; 
 then
     yum -y update && yum -y upgrade
 
-
-    
+    sudo yum install libreoffice-base
+  
     sudo yum remove -y docker \
                     docker-client \
                     docker-client-latest \
@@ -26,7 +41,7 @@ then
     sudo yum remove -y buildah podman
 
     # install necessary prerequisites
-    sudo yum install -y yum-utils wget curl device-mapper-persistent-data lvm2 python3 python3-pip libffi-devel openssl-devel zip unzip tar nano gcc gcc-c++ make python3-devel libevent-devel
+    sudo yum install -y yum-utils wget curl git device-mapper-persistent-data lvm2 python3 python3-pip libffi-devel openssl-devel zip unzip tar nano gcc gcc-c++ make python3-devel libevent-devel
     
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum-config-manager --enable docker-ce-stable
