@@ -2,9 +2,8 @@
 
 # global defines
 #
-SOFFICE_BIN='C:\PROGRA~1\LibreOffice\program\soffice.exe'
-
-DATA_DIR="./rawdata/"
+SOFFICE_BIN="/usr/bin/libreoffice"
+DATA_DIR="../../data/"
 SIZE_KIND="small"  # can be 'small' or 'full'
 
 IN_MT_DATA="$DATA_DIR/mtsamples-txt-$SIZE_KIND.tgz"

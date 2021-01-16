@@ -51,8 +51,8 @@ chmod 755 /etc/systemd/system/systemd_medcat.service
 chmod +x /etc/MedCATservice/start-service-prod.sh
 
 # Validate and start service (optional)
-# systemd-analyze verify systemd_medcat.service
-# systemctl disable systemd_medcat.service
-# systemctl stop systemd_medcat.service
-# systemctl enable systemd_medcat.service
-# systemctl start systemd_medcat.service
+systemd-analyze verify systemd_medcat.service
+systemctl disable systemd_medcat.service
+systemctl stop systemd_medcat.service
+systemctl enable systemd_medcat.service
+systemctl start systemd_medcat.service
