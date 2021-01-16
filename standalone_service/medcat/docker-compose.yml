@@ -7,8 +7,8 @@ services:
       container_name: medcat-service
       image: cogstacksystems/medcat-service
       env_file:
-        - ./medcat_service/envs/env_app
-        - ./medcat_service/envs/env_medcat
+        - ../../cogstack-pipeline/medcat_service/envs/env_app
+        - ../../cogstack-pipeline/medcat_service/envs/env_medcat
       volumes:
       - ../data/models/medmen/vocab.dat:/cat/models/vocab.dat:ro
       - ../data/models/medmen/cdb.dat:/cat/models/cdb.dat:ro
@@ -32,7 +32,7 @@ services:
     expose:
       - "8000"
     env_file:
-      - ./medcat_trainer/envs/env
+      - ../../cogstack-pipeline/medcat_trainer/envs/env
     command: /home/run.sh
     network_mode: host
   nginx:
