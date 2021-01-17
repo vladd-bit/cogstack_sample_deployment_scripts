@@ -109,7 +109,7 @@ services:
 # Medcat Service                                                            #
 #---------------------------------------------------------------------------#
   medcat-service:
-    container_name: medcaat-service
+    container_name: medcat-service
     image: cogstacksystems/medcat-service
     restart: always
     env_file:
@@ -126,15 +126,15 @@ services:
 #---------------------------------------------------------------------------#
 # Medcat Trainer                                                            #
 #---------------------------------------------------------------------------#
-  medcat-trainer:
-    container_name: medcat-trainer
-    hostname: medcat
+  medcat-trainer-ui:
+    container_name: cogstack-medcat-trainer-ui
+    hostname: cogstack-medcat-trainer-ui
     restart: always
     image: cogstacksystems/medcat-trainer:latest
     volumes:
-      - api-media:/home/api/media
-      - api-static:/home/api/static
-      - api-db:/home/api/db
+      - medcat-api-media:/home/api/media
+      - medcat-api-static:/home/api/static
+      - medcat-api-db:/home/api/db
     expose:
       - "8000"
     env_file:
@@ -146,13 +146,17 @@ services:
     image: cogstacksystems/medcat-trainer-nginx:latest
     restart: always
     volumes:
-      - api-media:/home/api/media
-      - api-static:/home/api/static
-    ports:
-      - "8001:8000"
+      - ./medcat_trainer/nginx/sites-enabled:/etc/nginx/sites-enabled/:ro
+      - medcat-api-media:/home/api/media
+      - medcat-api-static:/home/api/static
+    #ports:
+    #  - "${MCTRAINER_PORT:-8001}:8000"
+    #expose:
+    #  - "8001"
     depends_on:
-      - medcat-trainer
+      - medcat-trainer-ui
     network_mode: bridge
+
 
 #---------------------------------------------------------------------------#
 # Kibana webapp                                                             #
@@ -209,8 +213,8 @@ services:
        #           --certfile=/etc/ssl/notebook/jupyter.pem \
      ports:
      - "8888:8888"
-     expose: 
-     - "8888"
+     #expose: 
+     #- "8888"
      network_mode: bridge
      
 
@@ -233,4 +237,12 @@ volumes:
   cogstack-job-vol:
     driver: local
   elasticsearch-vol-1:
+    driver: local
+    
+  # MedCAT Trainer
+  medcat-api-media:
+    driver: local
+  medcat-api-static:
+    driver: local
+  medcat-api-db:
     driver: local
