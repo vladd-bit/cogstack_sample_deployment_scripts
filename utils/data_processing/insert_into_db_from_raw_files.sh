@@ -44,7 +44,8 @@ for folder_to_process in $folders_to_process; do
 # inserts it into the DB
 # --username "$POSTGRES_USER" --dbname "$POSTGRES_DATABANK_DB" --host "$docker_db_container_ip_address"
 psql -v ON_ERROR_STOP=1 "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$docker_db_container_ip_address/$POSTGRES_DATABANK_DB"<<-EOSQL
-    \copy TABLENAME from $file_path delimiter '|' csv header NULL '' encoding 'Windows-1251'; 
+    -- \copy TABLENAME from $file_path delimiter '|' csv header NULL '' encoding 'Windows-1251'; 
+    \copy TABLENAME from $file_path delimiter '|'  NULL '' encoding 'Windows-1251'; 
 EOSQL
             
             # moves it to a processed folder if successful query
