@@ -1,0 +1,10 @@
+* text=auto !eol
+*.txt text eol=lf 
+*.yml text eol=lf
+*.sh text eol=lf
+
+# .java .csv .jar .sql will have CRLF
+*.java eol=lf 
+*.csv eol=crlf
+*.jar eol=crlf
+*.sql eol=crlf
