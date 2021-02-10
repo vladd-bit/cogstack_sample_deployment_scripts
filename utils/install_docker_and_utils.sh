@@ -9,9 +9,17 @@ if [ "$os_distribution" == "debian" ] || [ "$os_distribution" == "ubuntu" ];
 then
     sudo apt-get update -y && sudo apt-get upgrade -y
 
-    sudo apt-get install -y libreoffice 
-    sudo apt-get install -y wget curl git python3 python3-pip openssl-devel zip unzip tar nano gcc gcc-c++ make python3-dev build-essential
+    sudo apt-get install -y --no-install-recommends libreoffice-core
+    sudo apt-get install -y wget curl gnupg-agent git ca-certificates apt-transport-https python3 python3-pip openssl-devel zip unzip tar nano gcc gcc-c++ make python3-dev build-essential software-properties-common
     
+    sudo -H pip3 install docker-compose
+    sudo -H pip3 install html2text
+
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+    sudo apt -y update 
+    sudo apt -y upgrade 
+    sudo apt -y install docker-ce docker-ce-cli containerd.io
+
     # create docker group and add the root user to it, as root will be used to run the docker process
     sudo groupadd docker
     sudo usermod -aG docker root
@@ -27,7 +35,7 @@ elif  [ "$os_distribution" == "redhat" ] || [ "$os_distribution" == "red hat" ] 
 then
     yum -y update && yum -y upgrade
 
-    sudo yum install libreoffice-base
+    sudo yum install libreoffice-base libreoffice-writer
   
     sudo yum remove -y docker \
                     docker-client \
@@ -48,8 +56,8 @@ then
     sudo yum-config-manager --enable docker-ce-stable-source
     sudo yum install -y docker-ce docker-ce-cli containerd.io
 
-    sudo pip3 install docker-compose
-    sudo pip3 install html2text
+    sudo -H pip3 install docker-compose
+    sudo -H pip3 install html2text
 
     # create docker group and add the root user to it, as root will be used to run the docker process
     sudo groupadd docker

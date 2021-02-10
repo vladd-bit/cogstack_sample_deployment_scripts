@@ -24,8 +24,8 @@ services:
 # CogStack-Pipeline related containers                                      #
 #---------------------------------------------------------------------------#
   cogstack-pipeline:
-    #image: cogstacksystems/cogstack-pipeline:dev-latest
-    image : cogstacksystems/cogstack-pipeline-gate:latest
+    image: cogstacksystems/cogstack-pipeline:dev-latest
+    #image : cogstacksystems/cogstack-pipeline-gate:latest
     shm_size : 128mb
     restart: always  
     environment:
@@ -207,7 +207,7 @@ services:
        #- "../security/jupyter.pem:/etc/ssl/notebook/jupyter.pem:ro"
        #- "../security/jupyter.key:/etc/ssl/notebook/jupyter.key:ro"
        #- "../security/root-ca.pem:/etc/ssl/notebook/root-ca.pem:ro"
-     # command: "start-notebook.sh  --NotebookApp.password=${JUPYTERHUB_PASSWORD}"
+     command: sh -c "pip3 install elasticsearch && pip3 install medcat && bash /usr/local/bin/start-notebook.sh"
        # INFO: uncomment below to use SSL keys (as a part of start-up cmd) 
        #           --keyfile=/etc/ssl/notebook/jupyter.key \
        #           --certfile=/etc/ssl/notebook/jupyter.pem \

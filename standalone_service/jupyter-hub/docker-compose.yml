@@ -14,11 +14,11 @@ services:
       #- "../security/jupyter.pem:/etc/ssl/notebook/jupyter.pem:ro"
       #- "../security/jupyter.key:/etc/ssl/notebook/jupyter.key:ro"
       #- "../security/root-ca.pem:/etc/ssl/notebook/root-ca.pem:ro"
-    command: "/usr/local/bin/start-notebook.sh"
+    command: sh -c "pip3 install elasticsearch && pip3 install medcat && /usr/local/bin/start-notebook.sh"
       # INFO: uncomment below to use SSL keys (as a part of start-up cmd) 
       #           --keyfile=/etc/ssl/notebook/jupyter.key \
       #           --certfile=/etc/ssl/notebook/jupyter.pem \
-    expose: 
-    - "8888"
+    #expose: 
+    #- "8888"
     network_mode: host
      

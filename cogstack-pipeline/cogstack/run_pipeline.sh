@@ -18,7 +18,7 @@ echo "*** Starting CogStack Pipeline ***"
 cog_start=`date +%s`
 
 #COG_PATH=/cogstack-pipeline
-#COG_CONFIG_PATH=$COG_PATH/cogstack_conf
+#COG_CONFIG_PATH=$COG_PATH/C
 
 time sh -c "java -DLOG_FILE_NAME=$LOG_FILE_NAME -DLOG_LEVEL=$LOG_LEVEL -DFILE_LOG_LEVEL=$FILE_LOG_LEVEL -jar ${1} $COG_CONFIG_PATH/step-1/"
 # time sh -c "java -DLOG_FILE_NAME=$LOG_FILE_NAME -DLOG_LEVEL=$LOG_LEVEL -DFILE_LOG_LEVEL=$FILE_LOG_LEVEL -jar ${1} $COG_CONFIG_PATH/step-2/"
