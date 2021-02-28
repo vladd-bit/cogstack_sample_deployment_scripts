@@ -10,10 +10,10 @@ then
     sudo apt-get update -y && sudo apt-get upgrade -y
 
     sudo apt-get install -y --no-install-recommends libreoffice-core
-    sudo apt-get install -y wget curl gnupg-agent git ca-certificates apt-transport-https python3 python3-pip openssl-devel zip unzip tar nano gcc gcc-c++ make python3-dev build-essential software-properties-common
+    sudo apt-get install -y jq wget curl gnupg-agent git ca-certificates apt-transport-https python3 python3-pip openssl-devel zip unzip tar nano gcc gcc-c++ make python3-dev build-essential software-properties-common
     
     sudo -H pip3 install docker-compose
-    sudo -H pip3 install html2text
+    sudo -H pip3 install html2text jsoncsv
 
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
     sudo apt -y update 
@@ -49,7 +49,7 @@ then
     sudo yum remove -y buildah podman
 
     # install necessary prerequisites
-    sudo yum install -y yum-utils wget curl git device-mapper-persistent-data lvm2 python3 python3-pip libffi-devel openssl-devel zip unzip tar nano gcc gcc-c++ make python3-devel libevent-devel
+    sudo yum install -y jq yum-utils wget curl git device-mapper-persistent-data lvm2 python3 python3-pip libffi-devel openssl-devel zip unzip tar nano gcc gcc-c++ make python3-devel libevent-devel
     
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum-config-manager --enable docker-ce-stable
@@ -57,7 +57,7 @@ then
     sudo yum install -y docker-ce docker-ce-cli containerd.io
 
     sudo -H pip3 install docker-compose
-    sudo -H pip3 install html2text
+    sudo -H pip3 install html2text jsoncsv
 
     # create docker group and add the root user to it, as root will be used to run the docker process
     sudo groupadd docker
