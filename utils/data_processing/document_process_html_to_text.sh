@@ -6,6 +6,9 @@ files_to_match="*.html"
 
 folders_to_process=('cogstack_processing_1')
 
+extension=".doc"
+output_extension=".txt"
+
 encoding="utf-8"
 
 for folder_to_process in $folders_to_process; do
@@ -20,12 +23,14 @@ for folder_to_process in $folders_to_process; do
         for file_path in $file_paths; do
           file_name_base=$(basename $file_path)
           file_name="${file_name_base%.*}"
-          file_path_new_file_ext=${file_path%.html}
 
-          file_path_without_file_name="${file_path//$file_name.*}"
-
-          echo "$(python -m html2text $file_path $encoding)"  > $file_path_new_file_ext".txt" 
-          echo "Finished processing : "$file_path  
+          file_path_new_file_ext=${file_path%$extension}$output_extension
+          if [ ! -f $file_path_new_file_ext ]; then
+            echo "$(python3 -m html2text $file_path $encoding)"  > $file_path_new_file_ext
+            echo "Finished processing : "$file_path
+          else
+            echo "File $file_path already processed... skipping "
+          fi
         done
     fi
 done

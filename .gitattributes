@@ -8,3 +8,4 @@
 *.csv eol=crlf
 *.jar eol=crlf
 *.sql eol=crlf
+*.py eol=crlf

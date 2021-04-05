@@ -5,7 +5,6 @@ services:
     image: cogstacksystems/annotations-ingester:latest
     shm_size : 128mb
     restart: always
-
     volumes:
       - ../../cogstack-pipeline/annotation_ingester/config/config.yml:/app/config/config.yml:ro
     network_mode: host

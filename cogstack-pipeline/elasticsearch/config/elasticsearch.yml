@@ -36,6 +36,11 @@ transport.host: 0.0.0.0
 xpack.license.self_generated.type: trial
 xpack.security.enabled: true
 xpack.security.http.ssl.enabled: false
+xpack.security.authc.api_key.enabled : true
+xpack.security.authc.api_key.cache.ttl : 1d
+xpack.security.authc.api_key.cache.max_keys : 20000
+xpack.security.authc.api_key.cache.hash_algo : ssha256
+
 #xpack.graph.enabled: false
 #xpack.ml.enabled: false
 #xpack.monitoring.enabled: false

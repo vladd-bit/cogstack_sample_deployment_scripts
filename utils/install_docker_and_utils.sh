@@ -9,11 +9,8 @@ if [ "$os_distribution" == "debian" ] || [ "$os_distribution" == "ubuntu" ];
 then
     sudo apt-get update -y && sudo apt-get upgrade -y
 
-    sudo apt-get install -y --no-install-recommends libreoffice-core
+    sudo apt-get install -y --no-install-recommends libreoffice-core libreoffice-writer
     sudo apt-get install -y jq wget curl gnupg-agent git ca-certificates apt-transport-https python3 python3-pip openssl-devel zip unzip tar nano gcc gcc-c++ make python3-dev build-essential software-properties-common
-    
-    sudo -H pip3 install docker-compose
-    sudo -H pip3 install html2text jsoncsv
 
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
     sudo apt -y update 
@@ -56,9 +53,6 @@ then
     sudo yum-config-manager --enable docker-ce-stable-source
     sudo yum install -y docker-ce docker-ce-cli containerd.io
 
-    sudo -H pip3 install docker-compose
-    sudo -H pip3 install html2text jsoncsv
-
     # create docker group and add the root user to it, as root will be used to run the docker process
     sudo groupadd docker
     sudo usermod -aG docker root
@@ -72,5 +66,11 @@ then
 else
     exit 1
 fi;
+
+echo "Installing require python packages.."
+
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install wheel docker-compose
+sudo -H pip3 install html2text jsoncsv detect
 
 echo "Finished installing docker and utils.."

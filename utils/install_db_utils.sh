@@ -7,7 +7,8 @@ echo "Found distribution: $os_distribution "
 
 if [ "$os_distribution" == "debian" ] || [ "$os_distribution" == "ubuntu" ];
 then
-    echo "No instructions given for distribution: $os_distribution" 
+    sudo apt-get update -y && sudo apt-get upgrade -y
+    sudo apt-get install -y postgresql-client
 elif  [ "$os_distribution" == "redhat" ] || [ "$os_distribution" == "red hat" ] || [ "$os_distribution" == "centos" ]; 
 then
     yum -y update && yum -y upgrade
@@ -18,6 +19,7 @@ then
 
     sudo yum -y autoremove
 else
+    echo "No instructions given for distribution: $os_distribution" 
     exit 1
 fi;
 
