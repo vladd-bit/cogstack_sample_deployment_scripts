@@ -1,5 +1,39 @@
 # Configuration file for jupyter-notebook.
 
+import os
+import pwd
+import subprocess
+from jupyterhub.auth import LocalAuthenticator
+from nativeauthenticator import NativeAuthenticator
+class LocalNativeAuthenticator(NativeAuthenticator, LocalAuthenticator):
+  pass
+
+def pre_spawn_hook(spawner):
+    username = spawner.user.name
+    try:
+        pwd.getpwnam(username)
+    except KeyError:
+        subprocess.check_call(['useradd', '-ms', '/bin/bash', username])
+
+# AUTHENTICATION
+c.Spawner.pre_spawn_hook = pre_spawn_hook
+
+#c.Authenticator.allowed_users = {'admin'}
+c.Authenticator.admin_users = {'admin'}
+
+# By default all users that make sign up on Native Authenticator
+#  need an admin approval so they can actually log in the system.
+c.Authenticator.open_signup = False
+
+c.LocalAuthenticator.create_system_users = True
+c.SystemdSpawner.dynamic_users = True
+c.PAMAuthenticator.admin_groups = {'wheel'}
+
+#c.JupyterHub.authenticator_class = LocalNativeAuthenticator
+
+c.FirstUseAuthenticator.create_users = False
+c.JupyterHub.authenticator_class = 'firstuseauthenticator.FirstUseAuthenticator' #'nativeauthenticator.NativeAuthenticator'
+
 #------------------------------------------------------------------------------
 # Application(SingletonConfigurable) configuration
 #------------------------------------------------------------------------------
@@ -30,6 +64,15 @@
 # JupyterApp(Application) configuration
 #------------------------------------------------------------------------------
 ## Base class for Jupyter applications
+
+#
+# c.JupyterHub.ip = '127.0.0.1'
+# c.ConfigurableHTTPProxy.api_url = 'http://10.0.1.4:5432'
+c.JupyterHub.port = 8888
+
+# ideally a private network address
+# c.JupyterHub.proxy_api_ip = '10.0.1.4'
+# c.JupyterHub.proxy_api_port = 5432
 
 ## Answer yes to any prompts.
 #  Default: False
@@ -389,7 +432,7 @@
 #  
 #  The string should be of the form type:salt:hashed-password.
 #  Default: ''
-c.NotebookApp.password = u'sha1:90559713cfc9:c4d986a5a63c083626ebc1a74cb874d9203c4152' # 'admin'
+# c.NotebookApp.password = u'sha1:90559713cfc9:c4d986a5a63c083626ebc1a74cb874d9203c4152' # 'admin'
 
 ## Forces users to use a password for the Notebook server. This is useful in a
 #  multi user environment, for instance when everybody in the LAN can access each

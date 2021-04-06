@@ -193,7 +193,6 @@ services:
 #---------------------------------------------------------------------------#
   jupyter-hub:
      image: jupyter/datascience-notebook
-     #build: ../services/jupyter-hub/
      container_name: cogstack-jupyter-hub-datascience-notebook
      restart: always
      environment:
@@ -203,20 +202,13 @@ services:
      volumes:
        - "./jupyter-hub/notebooks:/home/jovyan/notebooks"
        - "./jupyter-hub/config/jupyter_notebook_config.py:/home/jovyan/.jupyter/jupyter_notebook_config.py"
-       # INFO: uncomment below to map security certificates if needed
-       #- "../security/jupyter.pem:/etc/ssl/notebook/jupyter.pem:ro"
-       #- "../security/jupyter.key:/etc/ssl/notebook/jupyter.key:ro"
-       #- "../security/root-ca.pem:/etc/ssl/notebook/root-ca.pem:ro"
-     command: sh -c "pip3 install elasticsearch && pip3 install medcat && bash /usr/local/bin/start-notebook.sh"
-       # INFO: uncomment below to use SSL keys (as a part of start-up cmd) 
-       #           --keyfile=/etc/ssl/notebook/jupyter.key \
-       #           --certfile=/etc/ssl/notebook/jupyter.pem \
+       - "./jupyter-hub/setup_script.sh:/home/jovyan/setup_script.sh"
+      command: sh -c "bash /home/jovyan/setup_script.sh && jupyterhub -f /home/jovyan/.jupyter/jupyter_notebook_config.py"
      ports:
      - "8888:8888"
      #expose: 
      #- "8888"
      network_mode: bridge
-     
 
 #---------------------------------------------------------------------------#
 # Docker networks.                                                          #
