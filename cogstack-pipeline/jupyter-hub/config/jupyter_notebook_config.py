@@ -67,12 +67,12 @@ c.JupyterHub.authenticator_class = 'firstuseauthenticator.FirstUseAuthenticator'
 
 #
 # c.JupyterHub.ip = '127.0.0.1'
-# c.ConfigurableHTTPProxy.api_url = 'http://10.0.1.4:5432'
+c.ConfigurableHTTPProxy.api_url = 'http://127.0.0.1:8887'
 c.JupyterHub.port = 8888
 
 # ideally a private network address
 # c.JupyterHub.proxy_api_ip = '10.0.1.4'
-# c.JupyterHub.proxy_api_port = 5432
+c.JupyterHub.proxy_api_port = 8887
 
 ## Answer yes to any prompts.
 #  Default: False

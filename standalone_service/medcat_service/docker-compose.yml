@@ -7,6 +7,10 @@ services:
       container_name: medcat-service
       restart: always
       image: cogstacksystems/medcat-service
+      environment:
+        - http_proxy=$HTTP_PROXY
+        - https_proxy=$HTTPS_PROXY
+        - no_proxy=$no_proxy
       env_file:
         - ../../cogstack-pipeline/medcat_service/envs/env_app
         - ../../cogstack-pipeline/medcat_service/envs/env_medcat

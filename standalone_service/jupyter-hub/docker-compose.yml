@@ -7,15 +7,19 @@ services:
     restart: always
     environment:
       - JUPYTER_ENABLE_LAB=yes
+      - http_proxy=$HTTP_PROXY
+      - https_proxy=$HTTPS_PROXY
+      - no_proxy=$no_proxy
     volumes:
       - "../../cogstack-pipeline/jupyter-hub/notebooks:/home/jovyan/notebooks"
       - "../../cogstack-pipeline/jupyter-hub/config/jupyter_notebook_config.py:/home/jovyan/.jupyter/jupyter_notebook_config.py"
       - "../../cogstack-pipeline/jupyter-hub/setup_script.sh:/home/jovyan/setup_script.sh"
+      - "../../cogstack-pipeline/jupyter-hub/r_kernel_install.sh:/home/jovyan/r_kernel_install.sh"
       # INFO: uncomment below to map security certificates if needed
       #- "../security/jupyter.pem:/etc/ssl/notebook/jupyter.pem:ro"
       #- "../security/jupyter.key:/etc/ssl/notebook/jupyter.key:ro"
       #- "../security/root-ca.pem:/etc/ssl/notebook/root-ca.pem:ro"
-    command: sh -c "bash /home/jovyan/setup_script.sh && jupyterhub -f /home/jovyan/.jupyter/jupyter_notebook_config.py"   #/usr/local/bin/start-notebook.sh"
+    command: sh -c "bash /home/jovyan/setup_script.sh && bash /home/jovyan/r_kernel_install.sh && jupyterhub -f /home/jovyan/.jupyter/jupyter_notebook_config.py"   #/usr/local/bin/start-notebook.sh"
     # --ssl-key my_ssl.key --ssl-cert my_ssl.cert
      # INFO: uncomment below to use SSL keys (as a part of start-up cmd) 
       #           --keyfile=/etc/ssl/notebook/jupyter.key \

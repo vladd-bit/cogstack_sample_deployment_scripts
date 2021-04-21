@@ -8,7 +8,12 @@ services:
     hostname: medcat-trainer-ui
     restart: always
     image: cogstacksystems/medcat-trainer:latest
+    environment:
+      - http_proxy=$HTTP_PROXY
+      - https_proxy=$HTTPS_PROXY
+      - no_proxy=$no_proxy
     volumes:
+      - ../../cogstack-pipeline/medcat_trainer/configs:/home/configs/:ro
       - medcat-api-media:/home/api/media
       - medcat-api-static:/home/api/static
       - medcat-api-db:/home/api/db
@@ -22,6 +27,10 @@ services:
     container_name: medcattrainer_nginx
     image: cogstacksystems/medcat-trainer-nginx:latest
     restart: always
+    environment:
+      - http_proxy=$HTTP_PROXY
+      - https_proxy=$HTTPS_PROXY
+      - no_proxy=$no_proxy
     volumes:
       - ./nginx/sites-enabled:/etc/nginx/sites-enabled/:ro
       - medcat-api-media:/home/api/media
