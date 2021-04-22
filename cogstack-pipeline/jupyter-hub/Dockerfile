@@ -1,3 +1,4 @@
+
 FROM jupyter/datascience-notebook:latest
 
 USER root
@@ -16,6 +17,7 @@ RUN apt-get update && apt-get upgrade -y && \
     fonts-dejavu \
     build-essential \
     python3-dev \
+    python3-pip \
     unixodbc \
     unixodbc-dev \
     r-cran-rodbc \
@@ -28,3 +30,7 @@ RUN apt-get update && apt-get upgrade -y && \
     wget \
     curl \
     r-base
+
+RUN pip3 install --upgrade pip
+RUN pip3 install isort html2text jsoncsv detect wheel elasticsearch seaborn matplotlib tqdm && pip3 install medcat && pip install ipywidgets jupyter jupyterlab && pip install jupyterhub-nativea$
+RUN pip3 install jupyter_contrib_core jupyter_contrib_nbextensions
