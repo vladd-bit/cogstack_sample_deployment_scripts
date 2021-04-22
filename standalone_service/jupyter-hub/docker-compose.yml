@@ -21,6 +21,7 @@ services:
       - "../../cogstack-pipeline/jupyter-hub/notebooks:/home/jovyan/notebooks"
       - "../../cogstack-pipeline/jupyter-hub/config/jupyter_notebook_config.py:/home/jovyan/.jupyter/jupyter_notebook_config.py"
       - "../../cogstack-pipeline/jupyter-hub/setup_script.sh:/home/jovyan/setup_script.sh"
+      - jupyter_hub_vol: /home
       # INFO: uncomment below to map security certificates if needed
       #- "../security/jupyter.pem:/etc/ssl/notebook/jupyter.pem:ro"
       #- "../security/jupyter.key:/etc/ssl/notebook/jupyter.key:ro"
@@ -31,3 +32,7 @@ services:
       #           --keyfile=/etc/ssl/notebook/jupyter.key \
       #           --certfile=/etc/ssl/notebook/jupyter.pem \
     network_mode: host
+    
+volumes:
+  jupyter_hub_vol:
+    driver: local
